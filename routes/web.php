@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::prefix('auth')->group(function(){
     Route::get('login', [LoginController::class, 'index'])->name('auth.login')->middleware(['guest']);
+    Route::post('login', [LoginController::class, 'login'])->name('auth.login_attempt')->middleware(['guest']);
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function(){

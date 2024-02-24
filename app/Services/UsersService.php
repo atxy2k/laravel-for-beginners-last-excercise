@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class UsersService extends BaseService {
 
@@ -40,6 +41,17 @@ class UsersService extends BaseService {
             DB::rollBack();
         }
         return $return;
+    }
+
+    public function login(array $data) : void{
+        try
+        {
+            throw_unless(Auth::attempt(Arr::only($data,['email','password'])), new Exception('Parámetros incorrectos'));
+        }
+        catch(Throwable $e)
+        {
+            $this->pushError($e->getMessage());
+        }
     }
 
 }
