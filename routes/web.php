@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('dashboard.index');
+    return redirect()->route('dashboard.index');
+});
+
+Route::prefix('auth')->group(function(){
+    Route::get('login', [LoginController::class, 'index'])->name('auth.login')->middleware(['guest']);
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function(){
+    Route::get('/', [DashboardController::class,'index'])->name('dashboard.index');
 });
